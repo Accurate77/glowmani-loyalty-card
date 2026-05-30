@@ -1,1 +1,903 @@
-# glowmani-loyalty-card
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlowMani Nail Bar – Loyalty Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose-gold: #c9956c;
+    --rose-gold-light: #e8c4a8;
+    --rose-gold-dark: #a0714f;
+    --rose-gold-pale: #f5e8de;
+    --mauve: #8b6f6f;
+    --cream: #fdf8f5;
+    --dark: #2a1f1f;
+    --text-mid: #6b4f4f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 16px 60px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; right: -200px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,149,108,0.15), transparent 70%);
+    pointer-events: none;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -150px; left: -150px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,149,108,0.1), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .logo-circle {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #c9956c, #e8c4a8, #a0714f);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    box-shadow: 0 8px 30px rgba(160,113,79,0.35);
+    position: relative;
+  }
+
+  .logo-circle::after {
+    content: '';
+    position: absolute; inset: 3px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+
+  .logo-initials {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-style: italic;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    letter-spacing: -1px;
+  }
+
+  .brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--dark);
+  }
+
+  .brand-sub {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--rose-gold);
+    margin-top: 2px;
+  }
+
+  /* VIEWS */
+  .view { display: none; width: 100%; max-width: 420px; }
+  .view.active { display: block; animation: fadeUp 0.5s ease both; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* CARD */
+  .loyalty-card {
+    background: linear-gradient(145deg, #2a1f1f, #3d2a2a);
+    border-radius: 24px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(42,31,31,0.3);
+    margin-bottom: 20px;
+  }
+
+  .loyalty-card::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,149,108,0.2), transparent 70%);
+  }
+
+  .loyalty-card::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,196,168,0.1), transparent 70%);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    position: relative; z-index: 1;
+  }
+
+  .card-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--rose-gold-light);
+    letter-spacing: 1px;
+  }
+
+  .card-brand span {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8px;
+    font-style: normal;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rose-gold);
+    margin-top: 2px;
+  }
+
+  .card-badge {
+    background: linear-gradient(135deg, var(--rose-gold), var(--rose-gold-light));
+    color: white;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+
+  .client-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: white;
+    margin-bottom: 4px;
+    position: relative; z-index: 1;
+  }
+
+  .client-since {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rose-gold);
+    margin-bottom: 24px;
+    position: relative; z-index: 1;
+  }
+
+  /* STAMPS GRID */
+  .stamps-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+    position: relative; z-index: 1;
+  }
+
+  .stamp {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,149,108,0.4);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .stamp.filled {
+    background: linear-gradient(135deg, var(--rose-gold), var(--rose-gold-light));
+    border-color: var(--rose-gold-light);
+    box-shadow: 0 4px 15px rgba(201,149,108,0.4);
+    animation: stampIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+
+  @keyframes stampIn {
+    from { transform: scale(0) rotate(-20deg); opacity: 0; }
+    to { transform: scale(1) rotate(0); opacity: 1; }
+  }
+
+  .stamp-icon {
+    font-size: 16px;
+    opacity: 0;
+  }
+
+  .stamp.filled .stamp-icon {
+    opacity: 1;
+  }
+
+  .stamp-num {
+    position: absolute;
+    bottom: -18px;
+    font-size: 8px;
+    color: rgba(201,149,108,0.5);
+    letter-spacing: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .stamp.filled .stamp-num {
+    color: var(--rose-gold-light);
+  }
+
+  .stamp:last-child {
+    border-color: rgba(232,196,168,0.6);
+    background: rgba(201,149,108,0.08);
+  }
+
+  .stamp:last-child .stamp-icon {
+    opacity: 0.3;
+    font-size: 18px;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    position: relative; z-index: 1;
+    padding-top: 16px;
+    border-top: 1px solid rgba(201,149,108,0.2);
+  }
+
+  .visits-count {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    color: var(--rose-gold-light);
+    line-height: 1;
+  }
+
+  .visits-label {
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rose-gold);
+    margin-top: 2px;
+  }
+
+  .reward-info {
+    text-align: right;
+  }
+
+  .reward-text {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .reward-highlight {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    color: var(--rose-gold-light);
+    font-style: italic;
+  }
+
+  /* REWARD UNLOCKED */
+  .reward-unlocked {
+    background: linear-gradient(135deg, var(--rose-gold-dark), var(--rose-gold));
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201,149,108,0.4); }
+    50% { box-shadow: 0 0 0 12px rgba(201,149,108,0); }
+  }
+
+  .reward-unlocked h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: white;
+    margin-bottom: 4px;
+  }
+
+  .reward-unlocked p {
+    font-size: 11px;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 1px;
+  }
+
+  /* BUTTONS */
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--rose-gold), var(--rose-gold-light));
+    color: white;
+    box-shadow: 0 8px 25px rgba(160,113,79,0.35);
+    margin-bottom: 12px;
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(160,113,79,0.45); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--rose-gold-dark);
+    border: 1.5px solid var(--rose-gold-light);
+    margin-bottom: 12px;
+  }
+
+  .btn-outline:hover { background: var(--rose-gold-pale); }
+
+  .btn-dark {
+    background: var(--dark);
+    color: var(--rose-gold-light);
+  }
+
+  .btn-dark:hover { background: #3d2a2a; }
+
+  /* FORMS */
+  .form-group { margin-bottom: 16px; }
+
+  label {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--mauve);
+    margin-bottom: 6px;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid rgba(201,149,108,0.3);
+    border-radius: 12px;
+    background: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  input:focus { border-color: var(--rose-gold); }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    color: var(--dark);
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+
+  .section-sub {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--mauve);
+    margin-bottom: 24px;
+  }
+
+  /* ADMIN PANEL */
+  .client-list { margin-top: 16px; }
+
+  .client-item {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(201,149,108,0.2);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+
+  .client-info h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--dark);
+  }
+
+  .client-info p {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--mauve);
+  }
+
+  .mini-stamps {
+    display: flex; gap: 3px;
+  }
+
+  .mini-stamp {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(201,149,108,0.2);
+    border: 1px solid rgba(201,149,108,0.3);
+  }
+
+  .mini-stamp.filled {
+    background: var(--rose-gold);
+    border-color: var(--rose-gold-dark);
+  }
+
+  .stamp-btn {
+    background: linear-gradient(135deg, var(--rose-gold), var(--rose-gold-light));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .stamp-btn:hover { transform: scale(1.05); }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,149,108,0.3), transparent);
+    margin: 20px 0;
+  }
+
+  .pin-section {
+    background: var(--rose-gold-pale);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(201,149,108,0.2);
+  }
+
+  .pin-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--mauve);
+    margin-bottom: 4px;
+  }
+
+  .pin-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--rose-gold-dark);
+    letter-spacing: 8px;
+  }
+
+  .back-link {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--mauve);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .success-msg {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    border: 1px solid #b8dabc;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    font-size: 12px;
+    color: #2d6a4f;
+    margin-bottom: 16px;
+    display: none;
+    letter-spacing: 0.5px;
+  }
+
+  .tab-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(201,149,108,0.3);
+    background: transparent;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--mauve);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab.active {
+    background: var(--dark);
+    color: var(--rose-gold-light);
+    border-color: var(--dark);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 30px;
+    color: var(--mauve);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  .empty-state .emoji { font-size: 32px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-circle">
+    <span class="logo-initials">GM</span>
+  </div>
+  <div class="brand-name">GlowMani</div>
+  <div class="brand-sub">nail bar</div>
+</div>
+
+<!-- ===== VIEW: HOME ===== -->
+<div class="view active" id="view-home">
+  <button class="btn btn-primary" onclick="showView('view-client-lookup')">💅 View My Loyalty Card</button>
+  <button class="btn btn-outline" onclick="showView('view-register')">✨ New Client? Join Now</button>
+  <button class="btn btn-dark" onclick="showView('view-admin-login')">🔒 Staff Login</button>
+</div>
+
+<!-- ===== VIEW: REGISTER ===== -->
+<div class="view" id="view-register">
+  <div class="section-title">Join the Club</div>
+  <div class="section-sub">Create your loyalty card</div>
+  <div id="reg-success" class="success-msg">✅ Welcome to GlowMani! Your card is ready.</div>
+  <div class="form-group">
+    <label>Full Name</label>
+    <input type="text" id="reg-name" placeholder="Your name">
+  </div>
+  <div class="form-group">
+    <label>Mobile Number</label>
+    <input type="tel" id="reg-phone" placeholder="e.g. 082 123 4567">
+  </div>
+  <div class="form-group">
+    <label>Create a 4-digit PIN</label>
+    <input type="password" id="reg-pin" maxlength="4" placeholder="••••">
+  </div>
+  <button class="btn btn-primary" onclick="registerClient()">Create My Card</button>
+  <div class="back-link" onclick="showView('view-home')">← Back</div>
+</div>
+
+<!-- ===== VIEW: CLIENT LOOKUP ===== -->
+<div class="view" id="view-client-lookup">
+  <div class="section-title">Welcome Back</div>
+  <div class="section-sub">Enter your details to view your card</div>
+  <div class="form-group">
+    <label>Mobile Number</label>
+    <input type="tel" id="lookup-phone" placeholder="e.g. 082 123 4567">
+  </div>
+  <div class="form-group">
+    <label>Your PIN</label>
+    <input type="password" id="lookup-pin" maxlength="4" placeholder="••••">
+  </div>
+  <div id="lookup-error" class="success-msg" style="background:#fde8e8;border-color:#f5c6c6;color:#b94a4a;">Incorrect details. Please try again.</div>
+  <button class="btn btn-primary" onclick="lookupClient()">View My Card</button>
+  <div class="back-link" onclick="showView('view-home')">← Back</div>
+</div>
+
+<!-- ===== VIEW: CLIENT CARD ===== -->
+<div class="view" id="view-card">
+  <div id="reward-banner" class="reward-unlocked" style="display:none;">
+    <h3>🎉 Reward Unlocked!</h3>
+    <p>You've earned a FREE service of your choice!</p>
+    <p style="margin-top:6px;font-size:10px;opacity:0.8;">Show this to your nail tech to redeem</p>
+  </div>
+
+  <div class="loyalty-card">
+    <div class="card-top">
+      <div class="card-brand">
+        GlowMani
+        <span>nail bar · loyalty</span>
+      </div>
+      <div class="card-badge">Member</div>
+    </div>
+    <div class="client-name" id="card-client-name">—</div>
+    <div class="client-since" id="card-since">Member since —</div>
+
+    <div class="stamps-grid" id="stamps-grid"></div>
+
+    <div class="card-footer">
+      <div>
+        <div class="visits-count" id="card-visits">0</div>
+        <div class="visits-label">Visits</div>
+      </div>
+      <div class="reward-info">
+        <div class="reward-text">10 visits =</div>
+        <div class="reward-highlight">Free Service ✨</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-outline" onclick="showView('view-home')">← Back to Home</button>
+</div>
+
+<!-- ===== VIEW: ADMIN LOGIN ===== -->
+<div class="view" id="view-admin-login">
+  <div class="section-title">Staff Access</div>
+  <div class="section-sub">GlowMani Nail Bar</div>
+  <div class="form-group">
+    <label>Staff PIN</label>
+    <input type="password" id="admin-pin" maxlength="6" placeholder="Enter staff PIN">
+  </div>
+  <div id="admin-error" class="success-msg" style="background:#fde8e8;border-color:#f5c6c6;color:#b94a4a;display:none;">Incorrect PIN.</div>
+  <button class="btn btn-dark" onclick="adminLogin()">Login</button>
+  <div class="back-link" onclick="showView('view-home')">← Back</div>
+</div>
+
+<!-- ===== VIEW: ADMIN PANEL ===== -->
+<div class="view" id="view-admin">
+  <div class="section-title">Staff Panel</div>
+  <div class="section-sub">Manage client visits</div>
+
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('stamp')">Add Stamp</button>
+    <button class="tab" onclick="switchTab('clients')">All Clients</button>
+  </div>
+
+  <!-- STAMP TAB -->
+  <div id="tab-stamp">
+    <div class="form-group">
+      <label>Client Mobile Number</label>
+      <input type="tel" id="admin-client-phone" placeholder="e.g. 082 123 4567">
+    </div>
+    <div id="admin-success" class="success-msg">✅ Visit stamped successfully!</div>
+    <div id="admin-notfound" class="success-msg" style="background:#fde8e8;border-color:#f5c6c6;color:#b94a4a;">Client not found.</div>
+    <div id="admin-reward-alert" class="success-msg" style="background:#fff3cd;border-color:#ffc107;color:#856404;">🎉 This client has earned their FREE service!</div>
+    <button class="btn btn-primary" onclick="addStamp()">💅 Add Visit Stamp</button>
+    <div class="divider"></div>
+    <div class="pin-section">
+      <div class="pin-label">Change Staff PIN</div>
+      <div class="pin-value" id="current-pin-display">••••••</div>
+      <input type="password" id="new-pin" maxlength="6" placeholder="Enter new PIN" style="margin-top:10px;">
+      <button class="btn btn-outline" style="margin-top:10px;" onclick="changePin()">Update PIN</button>
+    </div>
+  </div>
+
+  <!-- CLIENTS TAB -->
+  <div id="tab-clients" style="display:none;">
+    <div id="client-list" class="client-list"></div>
+  </div>
+
+  <button class="btn btn-outline" onclick="showView('view-home')" style="margin-top:8px;">← Logout</button>
+</div>
+
+<script>
+// ======== DATA LAYER ========
+const ADMIN_PIN_KEY = 'gm_admin_pin';
+const CLIENTS_KEY = 'gm_clients';
+const DEFAULT_PIN = '1234';
+
+function getAdminPin() {
+  return localStorage.getItem(ADMIN_PIN_KEY) || DEFAULT_PIN;
+}
+
+function getClients() {
+  try { return JSON.parse(localStorage.getItem(CLIENTS_KEY)) || {}; }
+  catch { return {}; }
+}
+
+function saveClients(clients) {
+  localStorage.setItem(CLIENTS_KEY, JSON.stringify(clients));
+}
+
+function normalizePhone(p) {
+  return p.replace(/\s+/g, '').replace(/^0/, '27');
+}
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
+}
+
+// ======== VIEWS ========
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // Clear error msgs
+  ['reg-success','lookup-error','admin-error','admin-success','admin-notfound','admin-reward-alert'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+}
+
+// ======== REGISTER ========
+function registerClient() {
+  const name = document.getElementById('reg-name').value.trim();
+  const phone = normalizePhone(document.getElementById('reg-phone').value.trim());
+  const pin = document.getElementById('reg-pin').value.trim();
+  if (!name || !phone || pin.length !== 4) {
+    alert('Please fill in all fields with a valid 4-digit PIN.');
+    return;
+  }
+  const clients = getClients();
+  if (clients[phone]) { alert('A card already exists for this number.'); return; }
+  clients[phone] = { name, pin, visits: 0, since: new Date().toISOString(), redeemed: 0 };
+  saveClients(clients);
+  document.getElementById('reg-success').style.display = 'block';
+  document.getElementById('reg-name').value = '';
+  document.getElementById('reg-phone').value = '';
+  document.getElementById('reg-pin').value = '';
+  setTimeout(() => showView('view-home'), 2000);
+}
+
+// ======== LOOKUP ========
+function lookupClient() {
+  const phone = normalizePhone(document.getElementById('lookup-phone').value.trim());
+  const pin = document.getElementById('lookup-pin').value.trim();
+  const clients = getClients();
+  const client = clients[phone];
+  if (!client || client.pin !== pin) {
+    document.getElementById('lookup-error').style.display = 'block';
+    return;
+  }
+  showCardView(client);
+}
+
+function showCardView(client) {
+  const visits = client.visits % 10;
+  const totalCycles = Math.floor(client.visits / 10);
+  document.getElementById('card-client-name').textContent = client.name;
+  document.getElementById('card-since').textContent = 'Member since ' + formatDate(client.since);
+  document.getElementById('card-visits').textContent = client.visits;
+
+  const rewardBanner = document.getElementById('reward-banner');
+  rewardBanner.style.display = (client.visits > 0 && client.visits % 10 === 0) ? 'block' : 'none';
+
+  // Build stamps
+  const grid = document.getElementById('stamps-grid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= 10; i++) {
+    const stamp = document.createElement('div');
+    stamp.className = 'stamp' + (i <= visits ? ' filled' : '') + (i === 10 ? ' last' : '');
+    stamp.innerHTML = `<span class="stamp-icon">${i === 10 ? '🎁' : '💅'}</span><span class="stamp-num">${i}</span>`;
+    if (i <= visits) stamp.style.animationDelay = (i * 0.05) + 's';
+    grid.appendChild(stamp);
+  }
+
+  showView('view-card');
+}
+
+// ======== ADMIN ========
+function adminLogin() {
+  const pin = document.getElementById('admin-pin').value.trim();
+  if (pin !== getAdminPin()) {
+    document.getElementById('admin-error').style.display = 'block';
+    return;
+  }
+  document.getElementById('admin-pin').value = '';
+  loadClientList();
+  showView('view-admin');
+}
+
+function addStamp() {
+  const phone = normalizePhone(document.getElementById('admin-client-phone').value.trim());
+  const clients = getClients();
+  ['admin-success','admin-notfound','admin-reward-alert'].forEach(id => document.getElementById(id).style.display = 'none');
+  if (!clients[phone]) {
+    document.getElementById('admin-notfound').style.display = 'block';
+    return;
+  }
+  clients[phone].visits += 1;
+  saveClients(clients);
+  document.getElementById('admin-success').style.display = 'block';
+  document.getElementById('admin-client-phone').value = '';
+  if (clients[phone].visits % 10 === 0) {
+    setTimeout(() => {
+      document.getElementById('admin-success').style.display = 'none';
+      document.getElementById('admin-reward-alert').style.display = 'block';
+    }, 800);
+  }
+  loadClientList();
+}
+
+function changePin() {
+  const newPin = document.getElementById('new-pin').value.trim();
+  if (newPin.length < 4) { alert('PIN must be at least 4 digits.'); return; }
+  localStorage.setItem(ADMIN_PIN_KEY, newPin);
+  document.getElementById('new-pin').value = '';
+  alert('✅ Staff PIN updated!');
+}
+
+function loadClientList() {
+  const clients = getClients();
+  const list = document.getElementById('client-list');
+  const keys = Object.keys(clients);
+  if (keys.length === 0) {
+    list.innerHTML = '<div class="empty-state"><div class="emoji">💅</div><p>No clients yet.<br>Register the first client!</p></div>';
+    return;
+  }
+  list.innerHTML = '';
+  keys.sort((a,b) => clients[b].visits - clients[a].visits).forEach(phone => {
+    const c = clients[phone];
+    const visitsInCycle = c.visits % 10;
+    const item = document.createElement('div');
+    item.className = 'client-item';
+    let stampsHtml = '';
+    for (let i = 0; i < 10; i++) {
+      stampsHtml += `<div class="mini-stamp${i < visitsInCycle ? ' filled' : ''}"></div>`;
+    }
+    item.innerHTML = `
+      <div class="client-info">
+        <h4>${c.name}</h4>
+        <p>${phone} · ${c.visits} visits</p>
+        <div class="mini-stamps" style="margin-top:6px;">${stampsHtml}</div>
+      </div>
+      <button class="stamp-btn" onclick="quickStamp('${phone}')">+ Visit</button>
+    `;
+    list.appendChild(item);
+  });
+}
+
+function quickStamp(phone) {
+  const clients = getClients();
+  if (!clients[phone]) return;
+  clients[phone].visits += 1;
+  saveClients(clients);
+  loadClientList();
+  if (clients[phone].visits % 10 === 0) {
+    setTimeout(() => alert(`🎉 ${clients[phone].name} has earned their FREE service!`), 100);
+  }
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-stamp').style.display = tab === 'stamp' ? 'block' : 'none';
+  document.getElementById('tab-clients').style.display = tab === 'clients' ? 'block' : 'none';
+  if (tab === 'clients') loadClientList();
+}
+</script>
+</body>
+</html>
