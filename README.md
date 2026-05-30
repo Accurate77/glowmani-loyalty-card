@@ -1,0 +1,1 @@
+# glowmani-loyalty-card
